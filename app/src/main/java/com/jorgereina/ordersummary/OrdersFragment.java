@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,11 +35,14 @@ public class OrdersFragment extends Fragment {
     private TextView fulfilledOrdersTv;
     private TextView pendingPaymentsTv;
     private TextView cancelledOrdersTv;
+    private TextView partiallyPaidOrdersTv;
+
 
     private List<Order> orderList = new ArrayList<>();
     private List<Order> fulfilledOrdersList = new ArrayList<>();
-    private List<Order> pendingPaymentsList = new ArrayList<>();
+    private List<Order> pendingPaymentOrdersList = new ArrayList<>();
     private List<Order> cancelledOrdersList = new ArrayList<>();
+    private List<Order> partiallyPaidOrdersList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -52,16 +54,14 @@ public class OrdersFragment extends Fragment {
         fulfilledOrdersTv = view.findViewById(R.id.orders_to_fulfill_counter_tv);
         pendingPaymentsTv = view.findViewById(R.id.pending_payments_counter_tv);
         cancelledOrdersTv = view.findViewById(R.id.cancelled_orders_counter_tv);
+        partiallyPaidOrdersTv = view.findViewById(R.id.partially_paid_counter_tv);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         fetchData();
-
-
     }
 
     private void fetchData() {
@@ -82,6 +82,7 @@ public class OrdersFragment extends Fragment {
                 ordersToFulfill(orderList);
                 pendingPayments(orderList);
                 cancelledOrders(orderList);
+                partiallyPaidOrders(orderList);
             }
 
             @Override
@@ -95,7 +96,8 @@ public class OrdersFragment extends Fragment {
 
         Log.d(TAG, "orderstofulfill: " + orderList.get(3).getFulfillmentStatus());
         for (Order order : orderList) {
-            if (order.getFulfillmentStatus() != null) {
+            if (order.getFulfillmentStatus() == null
+                    || order.getFulfillmentStatus().equals("partial")){
                 fulfilledOrdersList.add(order);
             }
         }
@@ -107,22 +109,33 @@ public class OrdersFragment extends Fragment {
         Log.d(TAG, "pendingPayments: " + orderList.get(3).getPaymentStatus());
         for (Order order : orderList) {
 
-            if (!order.getPaymentStatus().equals("paid")) {
-                pendingPaymentsList.add(order);
+            if (order.getPaymentStatus().equals("pending")) {
+                pendingPaymentOrdersList.add(order);
             }
         }
-        pendingPaymentsTv.setText(pendingPaymentsList.size()+"");
+        pendingPaymentsTv.setText(pendingPaymentOrdersList.size()+"");
     }
 
     private void cancelledOrders(List<Order> orderList) {
 
-        Log.d(TAG, "pendingPayments: " + orderList.get(3).getCancelled());
+        Log.d(TAG, "cancelledOrders: " + orderList.get(3).getCancelled());
         for (Order order : orderList) {
             if (order.getCancelled() != null) {
                 cancelledOrdersList.add(order);
             }
         }
         cancelledOrdersTv.setText(cancelledOrdersList.size()+"");
+    }
+
+    private void partiallyPaidOrders(List<Order> orderList) {
+
+        Log.d(TAG, "pendingPayments: " + orderList.get(3).getCancelled());
+        for (Order order : orderList) {
+            if (order.getPaymentStatus().equals("partially_paid")) {
+                partiallyPaidOrdersList.add(order);
+            }
+        }
+        partiallyPaidOrdersTv.setText(cancelledOrdersList.size()+"");
     }
 
     public interface OrderSelectedListener {

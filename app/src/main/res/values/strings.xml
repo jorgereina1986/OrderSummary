@@ -3,4 +3,5 @@
     <string name="no_internet_error">No internet connection available.</string>
     <string name="pending_payments_title">Pending Payments</string>
     <string name="cancelled_orders_title">Cancelled Orders</string>
+    <string name="partially_paid_orders_title">Partially Paid Orders</string>
 </resources>
