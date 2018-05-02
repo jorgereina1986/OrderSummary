@@ -5,14 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,11 +23,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!isNetworkAvailable()) {
-            Toast.makeText(this, getString(R.string.no_internet_error), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show();
         }
     }
-
-
 
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

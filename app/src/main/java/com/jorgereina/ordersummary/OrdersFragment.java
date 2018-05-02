@@ -1,6 +1,7 @@
 package com.jorgereina.ordersummary;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -37,7 +38,6 @@ public class OrdersFragment extends Fragment {
     private TextView cancelledOrdersTv;
     private TextView partiallyPaidOrdersTv;
 
-
     private List<Order> orderList = new ArrayList<>();
     private List<Order> fulfilledOrdersList = new ArrayList<>();
     private List<Order> pendingPaymentOrdersList = new ArrayList<>();
@@ -66,42 +66,58 @@ public class OrdersFragment extends Fragment {
 
     private void fetchData() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (((MainActivity) getActivity()).isNetworkAvailable()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        ShopifyAPI api = retrofit.create(ShopifyAPI.class);
-        final Call<OrderResponse> orders = api.getOrders();
+            ShopifyAPI api = retrofit.create(ShopifyAPI.class);
+            final Call<OrderResponse> orders = api.getOrders();
 
-        orders.enqueue(new Callback<OrderResponse>() {
-            @Override
-            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                Log.d(TAG, "onResponse: " + response.body().getOrders().get(0).getEmail());
-                orderList.addAll(response.body().getOrders());
-                ordersToFulfill(orderList);
-                pendingPayments(orderList);
-                cancelledOrders(orderList);
-                partiallyPaidOrders(orderList);
-            }
+            orders.enqueue(new Callback<OrderResponse>() {
+                @Override
+                public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                    Log.d(TAG, "onResponse: " + response.body().getOrders().get(0).getEmail());
+                    orderList.addAll(response.body().getOrders());
+                    ordersToFulfill(orderList);
+                    pendingPayments(orderList);
+                    cancelledOrders(orderList);
+                    partiallyPaidOrders(orderList);
+                }
 
-            @Override
-            public void onFailure(Call<OrderResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<OrderResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_LONG).show();
+        }
     }
 
-    private void ordersToFulfill(List<Order> orderList) {
+    private void ordersToFulfill(final List<Order> orderList) {
 
         Log.d(TAG, "orderstofulfill: " + orderList.get(3).getFulfillmentStatus());
         for (Order order : orderList) {
             if (order.getFulfillmentStatus() == null
-                    || order.getFulfillmentStatus().equals("partial")){
+                    || order.getFulfillmentStatus().equals("partial")) {
                 fulfilledOrdersList.add(order);
             }
         }
-        fulfilledOrdersTv.setText(fulfilledOrdersList.size()+"");
+        fulfilledOrdersTv.setText(fulfilledOrdersList.size() + "");
+
+        fulfilledOrdersCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DetailedCategoryFragment detailedCategoryFragment = DetailedCategoryFragment.newInstance(orderList);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, detailedCategoryFragment, "DetailedFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     private void pendingPayments(List<Order> orderList) {
@@ -113,7 +129,7 @@ public class OrdersFragment extends Fragment {
                 pendingPaymentOrdersList.add(order);
             }
         }
-        pendingPaymentsTv.setText(pendingPaymentOrdersList.size()+"");
+        pendingPaymentsTv.setText(pendingPaymentOrdersList.size() + "");
     }
 
     private void cancelledOrders(List<Order> orderList) {
@@ -124,7 +140,7 @@ public class OrdersFragment extends Fragment {
                 cancelledOrdersList.add(order);
             }
         }
-        cancelledOrdersTv.setText(cancelledOrdersList.size()+"");
+        cancelledOrdersTv.setText(cancelledOrdersList.size() + "");
     }
 
     private void partiallyPaidOrders(List<Order> orderList) {
@@ -135,10 +151,6 @@ public class OrdersFragment extends Fragment {
                 partiallyPaidOrdersList.add(order);
             }
         }
-        partiallyPaidOrdersTv.setText(cancelledOrdersList.size()+"");
-    }
-
-    public interface OrderSelectedListener {
-        void onItemSelected(Order order);
+        partiallyPaidOrdersTv.setText(cancelledOrdersList.size() + "");
     }
 }

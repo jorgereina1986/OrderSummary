@@ -1,12 +1,15 @@
 package com.jorgereina.ordersummary;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by jorgereina on 5/1/18.
  */
 
-public class Order {
+public class Order implements Parcelable {
 
     private long id;
     private String email;
@@ -55,5 +58,39 @@ public class Order {
 
     public void setFulfillmentStatus(String fulfillmentStatus) {
         this.fulfillmentStatus = fulfillmentStatus;
+    }
+
+    protected Order(Parcel in) {
+        id = in.readLong();
+        email = in.readString();
+        paymentStatus = in.readString();
+        cancelled = in.readString();
+        fulfillmentStatus = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(email);
+        parcel.writeString(paymentStatus);
+        parcel.writeString(cancelled);
+        parcel.writeString(fulfillmentStatus);
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }
