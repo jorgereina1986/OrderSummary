@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class OrdersFragment extends Fragment {
     private CardView fulfilledOrdersCv;
     private CardView pendingPaymentsCv;
     private CardView cancelledOrdersCv;
+    private TextView fulfilledOrdersTv;
+    private TextView pendingPaymentsTv;
+    private TextView cancelledOrdersTv;
 
     private List<Order> orderList = new ArrayList<>();
     private List<Order> fulfilledOrdersList = new ArrayList<>();
@@ -45,6 +49,9 @@ public class OrdersFragment extends Fragment {
         fulfilledOrdersCv = view.findViewById(R.id.orders_to_fulfill_cv);
         pendingPaymentsCv = view.findViewById(R.id.pending_payments_cv);
         cancelledOrdersCv = view.findViewById(R.id.cancelled_orders_cv);
+        fulfilledOrdersTv = view.findViewById(R.id.orders_to_fulfill_counter_tv);
+        pendingPaymentsTv = view.findViewById(R.id.pending_payments_counter_tv);
+        cancelledOrdersTv = view.findViewById(R.id.cancelled_orders_counter_tv);
         return view;
     }
 
@@ -53,7 +60,6 @@ public class OrdersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fetchData();
-
 
 
     }
@@ -73,6 +79,9 @@ public class OrdersFragment extends Fragment {
             public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                 Log.d(TAG, "onResponse: " + response.body().getOrders().get(0).getEmail());
                 orderList.addAll(response.body().getOrders());
+                ordersToFulfill(orderList);
+                pendingPayments(orderList);
+                cancelledOrders(orderList);
             }
 
             @Override
@@ -84,30 +93,36 @@ public class OrdersFragment extends Fragment {
 
     private void ordersToFulfill(List<Order> orderList) {
 
+        Log.d(TAG, "orderstofulfill: " + orderList.get(3).getFulfillmentStatus());
         for (Order order : orderList) {
             if (order.getFulfillmentStatus() != null) {
                 fulfilledOrdersList.add(order);
             }
         }
-
+        fulfilledOrdersTv.setText(fulfilledOrdersList.size()+"");
     }
 
     private void pendingPayments(List<Order> orderList) {
 
+        Log.d(TAG, "pendingPayments: " + orderList.get(3).getPaymentStatus());
         for (Order order : orderList) {
-            if (order.getPaymentStatus() != "paid") {
+
+            if (!order.getPaymentStatus().equals("paid")) {
                 pendingPaymentsList.add(order);
             }
         }
+        pendingPaymentsTv.setText(pendingPaymentsList.size()+"");
     }
 
     private void cancelledOrders(List<Order> orderList) {
 
+        Log.d(TAG, "pendingPayments: " + orderList.get(3).getCancelled());
         for (Order order : orderList) {
             if (order.getCancelled() != null) {
                 cancelledOrdersList.add(order);
             }
         }
+        cancelledOrdersTv.setText(cancelledOrdersList.size()+"");
     }
 
     public interface OrderSelectedListener {
