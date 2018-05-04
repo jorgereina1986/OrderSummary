@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">OrderSummary</string>
     <string name="network_error">Network error</string>
-    <string name="pending_payments_title">Pending Payments</string>
-    <string name="cancelled_orders_title">Cancelled Orders</string>
-    <string name="partially_paid_orders_title">Partially Paid Orders</string>
+    <string name="orders_by_year">Orders in 2017</string>
+    <string name="orders_by_province_title">Orders by Province</string>
 </resources>

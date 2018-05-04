@@ -23,6 +23,8 @@ public class Order implements Parcelable {
     private String orderName;
     @SerializedName("total_price_usd")
     private String totalPrice;
+    @SerializedName("shipping_address")
+    private ShippingAddress shippingAddress;
 
     public long getId() {
         return id;
@@ -78,6 +80,14 @@ public class Order implements Parcelable {
 
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     protected Order(Parcel in) {
