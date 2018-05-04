@@ -57,14 +57,8 @@ public class DetailedCategoryFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         List<Order> list = bundle.getParcelableArrayList(ORDER_LIST_PARCEL);
-
+        orderList.clear();
         orderList.addAll(list);
-
         adapter.notifyDataSetChanged();
-
-
-
-
-
     }
 }

@@ -33,6 +33,12 @@
                 android:layout_gravity="center"
                 android:text="0"
                 android:textSize="@dimen/cardview_counter_text_60sp" />
+
+            <ProgressBar
+                android:id="@+id/pb1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -62,6 +68,12 @@
                 android:layout_gravity="center"
                 android:text="0"
                 android:textSize="@dimen/cardview_counter_text_60sp" />
+
+            <ProgressBar
+                android:id="@+id/pb2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -91,6 +103,12 @@
                 android:layout_gravity="center"
                 android:text="0"
                 android:textSize="@dimen/cardview_counter_text_60sp" />
+
+            <ProgressBar
+                android:id="@+id/pb3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -120,6 +138,12 @@
                 android:layout_gravity="center"
                 android:text="0"
                 android:textSize="@dimen/cardview_counter_text_60sp" />
+
+            <ProgressBar
+                android:id="@+id/pb4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
