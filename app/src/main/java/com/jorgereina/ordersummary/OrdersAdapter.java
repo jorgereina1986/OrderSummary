@@ -35,6 +35,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
         Order order = orderList.get(position);
         holder.email.setText(order.getEmail());
+        holder.id.setText(order.getId() + "");
+        holder.price.setText("$" + order.getTotalPrice());
+        holder.name.setText(order.getOrderName());
     }
 
     @Override
@@ -45,11 +48,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     class OrdersViewHolder extends RecyclerView.ViewHolder {
 
         private TextView email;
+        private TextView id;
+        private TextView name;
+        private TextView price;
 
         public OrdersViewHolder(View itemView) {
             super(itemView);
 
             email = itemView.findViewById(R.id.item_email_tv);
+            id = itemView.findViewById(R.id.order_id);
+            name = itemView.findViewById(R.id.order_name);
+            price = itemView.findViewById(R.id.total_price);
         }
     }
 }

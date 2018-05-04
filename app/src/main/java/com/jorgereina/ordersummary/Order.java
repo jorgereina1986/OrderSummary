@@ -19,6 +19,10 @@ public class Order implements Parcelable {
     private String cancelled;
     @SerializedName("")
     private String fulfillmentStatus;
+    @SerializedName("name")
+    private String orderName;
+    @SerializedName("total_price_usd")
+    private String totalPrice;
 
     public long getId() {
         return id;
@@ -58,6 +62,22 @@ public class Order implements Parcelable {
 
     public void setFulfillmentStatus(String fulfillmentStatus) {
         this.fulfillmentStatus = fulfillmentStatus;
+    }
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     protected Order(Parcel in) {
