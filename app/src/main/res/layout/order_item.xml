@@ -11,6 +11,11 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/item_province_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:id="@+id/item_order_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,11 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,13 +104,8 @@ public class OrdersFragment extends Fragment {
 
     private void ordersByProvince(final List<Order> orderList) {
 
-        //TODO: IMPLEMENT THIS AND CHANGE
+        Map<String, Integer> provinceMap = new TreeMap<>();
 
-//        Log.d(TAG, "ordersByProvince: " + orderList.get(0).getShippingAddress().getProvince());
-
-        Map<String, Integer> provinceMap = new HashMap<>();
-
-        ordersByProvince.clear();
         for (Order order : orderList) {
             if (order.getShippingAddress() != null) {
                 if (!provinceMap.containsKey(getProvinceName(order))) {
@@ -119,7 +114,9 @@ public class OrdersFragment extends Fragment {
                     provinceMap.put(getProvinceName(order), provinceMap.get(getProvinceName(order))+1);
                 }
             }
-
+            else {
+                order.setShippingAddress(new ShippingAddress(getString(R.string.no_shipping_info_available)));
+            }
         }
 
         String str = "";
@@ -129,16 +126,11 @@ public class OrdersFragment extends Fragment {
         }
 
         ordersByProvinceTv.setText(str);
-        Log.d(TAG, "ordersByProvince: " + str);
-//        Log.d(TAG, "ordersByProvince: " + provinceMap);
 
-        onCardViewSelection(ordersByProvinceCv, ordersByProvince);
+        Collections.sort(orderList, new OrderByProvinceComparator());
+        onCardViewSelection(ordersByProvinceCv, orderList);
     }
 
-
-    private String getProvinceName(Order order) {
-        return order.getShippingAddress().getProvince();
-    }
 
     private void ordersByYear(List<Order> orderList) {
 
@@ -151,6 +143,10 @@ public class OrdersFragment extends Fragment {
         ordersByYearTv.setText(ordersInYear2017.size() + "");
 
         onCardViewSelection(ordersByYearCv, ordersInYear2017);
+    }
+
+    private String getProvinceName(Order order) {
+        return order.getShippingAddress().getProvince();
     }
 
     private String getOrderYear(Order order) {
@@ -169,10 +165,10 @@ public class OrdersFragment extends Fragment {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DetailedCategoryFragment detailedCategoryFragment =
-                        DetailedCategoryFragment.newInstance(orderList);
+                OrderListFragment orderListFragment =
+                        OrderListFragment.newInstance(orderList);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, detailedCategoryFragment, "DetailedFragment")
+                transaction.replace(R.id.frame_layout, orderListFragment, "DetailedFragment")
                         .addToBackStack(null)
                         .commit();
             }

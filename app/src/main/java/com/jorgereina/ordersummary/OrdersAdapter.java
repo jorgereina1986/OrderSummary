@@ -44,6 +44,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         holder.price.setText("$" + order.getTotalPrice());
         holder.name.setText(order.getOrderName());
         holder.date.setText(getOrderDateCreated(order.getDateCreated()));
+        if (order.getShippingAddress() != null) {
+            holder.province.setText(order.getShippingAddress().getProvince());
+        }
     }
 
     @Override
@@ -58,6 +61,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         private TextView email;
         private TextView price;
         private TextView date;
+        private TextView province;
 
         public OrdersViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +71,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             name = itemView.findViewById(R.id.item_order_name_tv);
             price = itemView.findViewById(R.id.item_total_price_tv);
             date = itemView.findViewById(R.id.item_date_tv);
+            province = itemView.findViewById(R.id.item_province_tv);
         }
     }
 

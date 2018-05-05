@@ -17,7 +17,7 @@ import java.util.List;
  * Created by jorgereina on 5/2/18.
  */
 
-public class DetailedCategoryFragment extends Fragment {
+public class OrderListFragment extends Fragment {
 
     private static final String ORDER_LIST_PARCEL = "orderlist_parcel";
 
@@ -25,12 +25,12 @@ public class DetailedCategoryFragment extends Fragment {
     private OrdersAdapter adapter;
     private List<Order> orderList = new ArrayList<>();
 
-    public static DetailedCategoryFragment newInstance(List<Order> orders) {
+    public static OrderListFragment newInstance(List<Order> orders) {
 
         Bundle args = new Bundle();
         args.putParcelableArrayList(ORDER_LIST_PARCEL, (ArrayList<? extends Parcelable>) orders);
 
-        DetailedCategoryFragment fragment = new DetailedCategoryFragment();
+        OrderListFragment fragment = new OrderListFragment();
         fragment.setArguments(args);
         return fragment;
     }

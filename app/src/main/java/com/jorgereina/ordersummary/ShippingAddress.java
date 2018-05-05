@@ -10,6 +10,10 @@ public class ShippingAddress {
 
     private String province;
 
+    public ShippingAddress(String province) {
+        this.province = province;
+    }
+
     public String getProvince() {
         return province;
     }
