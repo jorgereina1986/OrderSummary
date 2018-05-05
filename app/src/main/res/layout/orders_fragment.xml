@@ -26,13 +26,18 @@
                 android:text="@string/orders_by_province_title"
                 android:textSize="@dimen/cardview_title_30sp" />
 
-            <TextView
-                android:id="@+id/orders_to_fulfill_counter_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="0"
-                android:textSize="@dimen/cardview_counter_text_60sp" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/orders_by_province_states_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="0"
+                    android:textSize="@dimen/cardview_province_text_25sp" />
+            </ScrollView>
 
             <ProgressBar
                 android:id="@+id/pb1"
@@ -67,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="0"
-                android:textSize="@dimen/cardview_counter_text_60sp" />
+                android:textSize="@dimen/cardview_province_text_25sp" />
 
             <ProgressBar
                 android:id="@+id/pb2"

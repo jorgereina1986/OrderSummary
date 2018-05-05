@@ -25,8 +25,6 @@ public class DetailedCategoryFragment extends Fragment {
     private OrdersAdapter adapter;
     private List<Order> orderList = new ArrayList<>();
 
-
-
     public static DetailedCategoryFragment newInstance(List<Order> orders) {
 
         Bundle args = new Bundle();

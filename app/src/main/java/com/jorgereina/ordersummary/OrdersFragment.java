@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +55,7 @@ public class OrdersFragment extends Fragment {
         View view = inflater.inflate(R.layout.orders_fragment, container, false);
         ordersByProvinceCv = view.findViewById(R.id.orders_by_province_cv);
         ordersByYearCv = view.findViewById(R.id.orders_by_year);
-        ordersByProvinceTv = view.findViewById(R.id.orders_to_fulfill_counter_tv);
+        ordersByProvinceTv = view.findViewById(R.id.orders_by_province_states_tv);
         ordersByYearTv = view.findViewById(R.id.pending_payments_counter_tv);
         progressBar1 = view.findViewById(R.id.pb1);
         progressBar2 = view.findViewById(R.id.pb2);
@@ -103,38 +106,44 @@ public class OrdersFragment extends Fragment {
 
         //TODO: IMPLEMENT THIS AND CHANGE
 
+//        Log.d(TAG, "ordersByProvince: " + orderList.get(0).getShippingAddress().getProvince());
+
+        Map<String, Integer> provinceMap = new HashMap<>();
+
         ordersByProvince.clear();
         for (Order order : orderList) {
-            if (order.getFulfillmentStatus() == null
-                    || order.getFulfillmentStatus().equals("partial")) {
-                ordersByProvince.add(order);
+            if (order.getShippingAddress() != null) {
+                if (!provinceMap.containsKey(getProvinceName(order))) {
+                    provinceMap.put(getProvinceName(order), 1);
+                } else {
+                    provinceMap.put(getProvinceName(order), provinceMap.get(getProvinceName(order))+1);
+                }
             }
+
         }
-        ordersByProvinceTv.setText(ordersByProvince.size() + "");
+
+        String str = "";
+
+        for (String key : provinceMap.keySet()) {
+            str = str + key + " " + provinceMap.get(key) + "\n";
+        }
+
+        ordersByProvinceTv.setText(str);
+        Log.d(TAG, "ordersByProvince: " + str);
+//        Log.d(TAG, "ordersByProvince: " + provinceMap);
 
         onCardViewSelection(ordersByProvinceCv, ordersByProvince);
     }
 
 
+    private String getProvinceName(Order order) {
+        return order.getShippingAddress().getProvince();
+    }
 
     private void ordersByYear(List<Order> orderList) {
 
-        //TODO: IMPLEMENT THIS AND CHANGE
-
-        //  "2017-07-11T14:05:00-04:00"
-
-
-
-//        Log.d(TAG, "Year: " + date.getYear() + "\n" +
-//                "Month: " + date.getMonthOfYear() + "\n" +
-//                "Day: " + date.getDayOfMonth() + "\n" +
-//                "Email: "+ orderList.get(11).getEmail() + "\n" +
-//                "Order#: " + orderList.get(11).getOrderName());
-
-
         ordersInYear2017.clear();
         for (Order order : orderList) {
-
             if (getOrderYear(order).equals("2017")) {
                 ordersInYear2017.add(order);
             }
