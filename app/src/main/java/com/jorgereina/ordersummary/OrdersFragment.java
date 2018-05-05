@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,25 +35,23 @@ public class OrdersFragment extends Fragment {
     private static final String BASE_URL = "https://shopicruit.myshopify.com/";
     private static final String TAG = "lagarto";
 
-    private CardView ordersByProvince;
-    private CardView ordersByYear;
+    private CardView ordersByProvinceCv;
+    private CardView ordersByYearCv;
     private TextView ordersByProvinceTv;
     private TextView ordersByYearTv;
     private ProgressBar progressBar1;
     private ProgressBar progressBar2;
 
     private List<Order> orderList = new ArrayList<>();
-    private List<Order> fulfilledOrdersList = new ArrayList<>();
-    private List<Order> pendingPaymentOrdersList = new ArrayList<>();
-    private List<Order> cancelledOrdersList = new ArrayList<>();
-    private List<Order> partiallyPaidOrdersList = new ArrayList<>();
+    private List<Order> ordersByProvince = new ArrayList<>();
+    private List<Order> ordersInYear2017 = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.orders_fragment, container, false);
-        ordersByProvince = view.findViewById(R.id.orders_by_province_cv);
-        ordersByYear = view.findViewById(R.id.orders_by_year);
+        ordersByProvinceCv = view.findViewById(R.id.orders_by_province_cv);
+        ordersByYearCv = view.findViewById(R.id.orders_by_year);
         ordersByProvinceTv = view.findViewById(R.id.orders_to_fulfill_counter_tv);
         ordersByYearTv = view.findViewById(R.id.pending_payments_counter_tv);
         progressBar1 = view.findViewById(R.id.pb1);
@@ -78,14 +80,12 @@ public class OrdersFragment extends Fragment {
             orders.enqueue(new Callback<OrderResponse>() {
                 @Override
                 public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                    Log.d(TAG, "onResponse: " + response.body().getOrders().get(0).getShippingAddress().getProvince());
                     showProgressBar();
                     orderList.clear();
                     orderList.addAll(response.body().getOrders());
                     ordersByProvince(orderList);
                     ordersByYear(orderList);
                     hideProgressBar();
-
                 }
 
                 @Override
@@ -103,17 +103,16 @@ public class OrdersFragment extends Fragment {
 
         //TODO: IMPLEMENT THIS AND CHANGE
 
-        Log.d(TAG, "orderstofulfill: " + orderList.get(3).getFulfillmentStatus());
-        fulfilledOrdersList.clear();
+        ordersByProvince.clear();
         for (Order order : orderList) {
             if (order.getFulfillmentStatus() == null
                     || order.getFulfillmentStatus().equals("partial")) {
-                fulfilledOrdersList.add(order);
+                ordersByProvince.add(order);
             }
         }
-        ordersByProvinceTv.setText(fulfilledOrdersList.size() + "");
+        ordersByProvinceTv.setText(ordersByProvince.size() + "");
 
-        onCardViewSelection(ordersByProvince, fulfilledOrdersList);
+        onCardViewSelection(ordersByProvinceCv, ordersByProvince);
     }
 
 
@@ -122,16 +121,39 @@ public class OrdersFragment extends Fragment {
 
         //TODO: IMPLEMENT THIS AND CHANGE
 
-        Log.d(TAG, "ordersByYear: " + orderList.get(3).getPaymentStatus());
-        pendingPaymentOrdersList.clear();
+        //  "2017-07-11T14:05:00-04:00"
+
+
+
+//        Log.d(TAG, "Year: " + date.getYear() + "\n" +
+//                "Month: " + date.getMonthOfYear() + "\n" +
+//                "Day: " + date.getDayOfMonth() + "\n" +
+//                "Email: "+ orderList.get(11).getEmail() + "\n" +
+//                "Order#: " + orderList.get(11).getOrderName());
+
+
+        ordersInYear2017.clear();
         for (Order order : orderList) {
-            if (order.getPaymentStatus().equals("pending")) {
-                pendingPaymentOrdersList.add(order);
+
+            if (getOrderYear(order).equals("2017")) {
+                ordersInYear2017.add(order);
             }
         }
-        ordersByYearTv.setText(pendingPaymentOrdersList.size() + "");
+        ordersByYearTv.setText(ordersInYear2017.size() + "");
 
-        onCardViewSelection(ordersByYear, pendingPaymentOrdersList);
+        onCardViewSelection(ordersByYearCv, ordersInYear2017);
+    }
+
+    private String getOrderYear(Order order) {
+
+        DateTimeFormatter formatter = DateTimeFormat
+                .forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                .withLocale(Locale.CANADA);
+
+        LocalDate date = formatter.parseLocalDate(order.getDateCreated());
+
+        return String.valueOf(date.getYear());
+
     }
 
     private void onCardViewSelection(CardView cardView, final List<Order> orderList) {

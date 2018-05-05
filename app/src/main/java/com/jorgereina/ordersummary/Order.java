@@ -25,6 +25,8 @@ public class Order implements Parcelable {
     private String totalPrice;
     @SerializedName("shipping_address")
     private ShippingAddress shippingAddress;
+    @SerializedName("created_at")
+    private String dateCreated;
 
     public long getId() {
         return id;
@@ -88,6 +90,18 @@ public class Order implements Parcelable {
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public static Creator<Order> getCREATOR() {
+        return CREATOR;
     }
 
     protected Order(Parcel in) {
