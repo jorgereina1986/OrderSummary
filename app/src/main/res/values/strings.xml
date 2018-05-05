@@ -4,4 +4,6 @@
     <string name="orders_by_year">Orders in 2017</string>
     <string name="orders_by_province_title">Orders by Province</string>
     <string name="no_shipping_info_available">No shipping info available</string>
+    <string name="order_number">Order:\u0020</string>
+    <string name="dollar_sign">$</string>
 </resources>

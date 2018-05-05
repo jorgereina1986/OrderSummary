@@ -1,4 +1,6 @@
-package com.jorgereina.ordersummary;
+package com.jorgereina.ordersummary.network;
+
+import com.jorgereina.ordersummary.model.OrderResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

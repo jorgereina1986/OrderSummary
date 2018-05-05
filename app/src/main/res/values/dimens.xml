@@ -3,4 +3,5 @@
     <dimen name="cardview_title_30sp">30sp</dimen>
     <dimen name="cardview_orders_by_province_text_25sp">25sp</dimen>
     <dimen name="cardview_orders_by_year_text_80sp">80sp</dimen>
+    <dimen name="item_padding">10dp</dimen>
 </resources>

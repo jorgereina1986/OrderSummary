@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jorgereina.ordersummary.model.Order;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -40,9 +42,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
         Order order = orderList.get(position);
         holder.email.setText(order.getEmail());
-        holder.id.setText(order.getId() + "");
-        holder.price.setText("$" + order.getTotalPrice());
-        holder.name.setText(order.getOrderName());
+        holder.id.setText(String.valueOf(order.getId()));
+        holder.price.setText(context.getString(R.string.dollar_sign) + order.getTotalPrice());
+        holder.name.setText(context.getString(R.string.order_number) + order.getOrderName());
         holder.date.setText(getOrderDateCreated(order.getDateCreated()));
         if (order.getShippingAddress() != null) {
             holder.province.setText(order.getShippingAddress().getProvince());

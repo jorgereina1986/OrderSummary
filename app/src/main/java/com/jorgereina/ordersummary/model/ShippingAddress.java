@@ -1,4 +1,4 @@
-package com.jorgereina.ordersummary;
+package com.jorgereina.ordersummary.model;
 
 import com.google.gson.annotations.SerializedName;
 

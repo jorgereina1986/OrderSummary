@@ -12,6 +12,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jorgereina.ordersummary.model.Order;
+import com.jorgereina.ordersummary.model.OrderResponse;
+import com.jorgereina.ordersummary.model.ShippingAddress;
+import com.jorgereina.ordersummary.network.ShopifyAPI;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -46,7 +51,6 @@ public class OrdersFragment extends Fragment {
     private ProgressBar progressBar2;
 
     private List<Order> orderList = new ArrayList<>();
-    private List<Order> ordersByProvince = new ArrayList<>();
     private List<Order> ordersInYear2017 = new ArrayList<>();
 
     @Nullable
@@ -104,6 +108,7 @@ public class OrdersFragment extends Fragment {
 
     private void ordersByProvince(final List<Order> orderList) {
 
+        String provinceText = "";
         Map<String, Integer> provinceMap = new TreeMap<>();
 
         for (Order order : orderList) {
@@ -119,13 +124,11 @@ public class OrdersFragment extends Fragment {
             }
         }
 
-        String str = "";
-
         for (String key : provinceMap.keySet()) {
-            str = str + key + " " + provinceMap.get(key) + "\n";
+            provinceText = provinceText + key + " " + provinceMap.get(key) + "\n";
         }
 
-        ordersByProvinceTv.setText(str);
+        ordersByProvinceTv.setText(provinceText);
 
         Collections.sort(orderList, new OrderByProvinceComparator());
         onCardViewSelection(ordersByProvinceCv, orderList);

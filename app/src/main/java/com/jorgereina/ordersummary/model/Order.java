@@ -1,4 +1,4 @@
-package com.jorgereina.ordersummary;
+package com.jorgereina.ordersummary.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

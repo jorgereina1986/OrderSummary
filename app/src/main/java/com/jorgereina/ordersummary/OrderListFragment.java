@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jorgereina.ordersummary.model.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class OrderListFragment extends Fragment {
 
-    private static final String ORDER_LIST_PARCEL = "orderlist_parcel";
+    private static final String ORDER_LIST_PARCEL = "order_list_parcel";
 
     private RecyclerView recyclerView;
     private OrdersAdapter adapter;

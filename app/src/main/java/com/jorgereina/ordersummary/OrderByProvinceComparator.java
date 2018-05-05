@@ -1,5 +1,7 @@
 package com.jorgereina.ordersummary;
 
+import com.jorgereina.ordersummary.model.Order;
+
 /**
  * Created by jorgereina on 5/4/18.
  */
