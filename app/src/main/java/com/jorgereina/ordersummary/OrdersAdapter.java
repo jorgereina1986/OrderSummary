@@ -8,7 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by jorgereina on 5/2/18.
@@ -38,7 +43,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         holder.id.setText(order.getId() + "");
         holder.price.setText("$" + order.getTotalPrice());
         holder.name.setText(order.getOrderName());
-        holder.date.setText(order.getDateCreated());
+        holder.date.setText(getOrderDateCreated(order.getDateCreated()));
     }
 
     @Override
@@ -63,5 +68,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             price = itemView.findViewById(R.id.item_total_price_tv);
             date = itemView.findViewById(R.id.item_date_tv);
         }
+    }
+
+    private String getOrderDateCreated(String orderDate) {
+        DateTimeFormatter formatter = DateTimeFormat
+                .forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+                .withLocale(Locale.CANADA);
+
+        LocalDate date = formatter.parseLocalDate(orderDate);
+        return date.getMonthOfYear() + "/" + date.getDayOfMonth() + "/" + date.getYear();
     }
 }
