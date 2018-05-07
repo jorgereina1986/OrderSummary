@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.jorgereina.ordersummary.model.Order;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class OrderListFragment extends Fragment {
     public static OrderListFragment newInstance(List<Order> orders) {
 
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ORDER_LIST_PARCEL, (ArrayList<? extends Parcelable>) orders);
+        args.putParcelable(ORDER_LIST_PARCEL, Parcels.wrap(orders));
 
         OrderListFragment fragment = new OrderListFragment();
         fragment.setArguments(args);
@@ -54,7 +56,7 @@ public class OrderListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        List<Order> list = bundle.getParcelableArrayList(ORDER_LIST_PARCEL);
+        List<Order> list = Parcels.unwrap(bundle.getParcelable(ORDER_LIST_PARCEL));
         orderList.clear();
         orderList.addAll(list);
         adapter.notifyDataSetChanged();

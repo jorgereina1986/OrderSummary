@@ -20,6 +20,7 @@ import com.jorgereina.ordersummary.network.ShopifyAPI;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -161,7 +162,6 @@ public class OrdersFragment extends Fragment {
         LocalDate date = formatter.parseLocalDate(order.getDateCreated());
 
         return String.valueOf(date.getYear());
-
     }
 
     private void onCardViewSelection(CardView cardView, final List<Order> orderList) {

@@ -1,32 +1,32 @@
 package com.jorgereina.ordersummary.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
+
+import org.parceler.Parcel;
 
 /**
  * Created by jorgereina on 5/1/18.
  */
 
-public class Order implements Parcelable {
+@Parcel
+public class Order {
 
-    private long id;
-    private String email;
+    public long id;
+    public String email;
     @SerializedName("financial_status")
-    private String paymentStatus;
+    public String paymentStatus;
     @SerializedName("cancelled_at")
-    private String cancelled;
+    public String cancelled;
     @SerializedName("")
-    private String fulfillmentStatus;
+    public String fulfillmentStatus;
     @SerializedName("name")
-    private String orderName;
+    public String orderName;
     @SerializedName("total_price_usd")
-    private String totalPrice;
+    public String totalPrice;
     @SerializedName("shipping_address")
-    private ShippingAddress shippingAddress;
+    public ShippingAddress shippingAddress;
     @SerializedName("created_at")
-    private String dateCreated;
+    public String dateCreated;
 
     public long getId() {
         return id;
@@ -100,41 +100,41 @@ public class Order implements Parcelable {
         this.dateCreated = dateCreated;
     }
 
-    public static Creator<Order> getCREATOR() {
-        return CREATOR;
-    }
-
-    protected Order(Parcel in) {
-        id = in.readLong();
-        email = in.readString();
-        paymentStatus = in.readString();
-        cancelled = in.readString();
-        fulfillmentStatus = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(id);
-        parcel.writeString(email);
-        parcel.writeString(paymentStatus);
-        parcel.writeString(cancelled);
-        parcel.writeString(fulfillmentStatus);
-    }
-
-    public static final Creator<Order> CREATOR = new Creator<Order>() {
-        @Override
-        public Order createFromParcel(Parcel in) {
-            return new Order(in);
-        }
-
-        @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+//    public static Creator<Order> getCREATOR() {
+//        return CREATOR;
+//    }
+//
+//    protected Order(Parcel in) {
+//        id = in.readLong();
+//        email = in.readString();
+//        paymentStatus = in.readString();
+//        cancelled = in.readString();
+//        fulfillmentStatus = in.readString();
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int i) {
+//        parcel.writeLong(id);
+//        parcel.writeString(email);
+//        parcel.writeString(paymentStatus);
+//        parcel.writeString(cancelled);
+//        parcel.writeString(fulfillmentStatus);
+//    }
+//
+//    public static final Creator<Order> CREATOR = new Creator<Order>() {
+//        @Override
+//        public Order createFromParcel(Parcel in) {
+//            return new Order(in);
+//        }
+//
+//        @Override
+//        public Order[] newArray(int size) {
+//            return new Order[size];
+//        }
+//    };
+//
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
 }
