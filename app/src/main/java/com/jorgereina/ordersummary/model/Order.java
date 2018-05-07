@@ -99,42 +99,4 @@ public class Order {
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
-
-//    public static Creator<Order> getCREATOR() {
-//        return CREATOR;
-//    }
-//
-//    protected Order(Parcel in) {
-//        id = in.readLong();
-//        email = in.readString();
-//        paymentStatus = in.readString();
-//        cancelled = in.readString();
-//        fulfillmentStatus = in.readString();
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel parcel, int i) {
-//        parcel.writeLong(id);
-//        parcel.writeString(email);
-//        parcel.writeString(paymentStatus);
-//        parcel.writeString(cancelled);
-//        parcel.writeString(fulfillmentStatus);
-//    }
-//
-//    public static final Creator<Order> CREATOR = new Creator<Order>() {
-//        @Override
-//        public Order createFromParcel(Parcel in) {
-//            return new Order(in);
-//        }
-//
-//        @Override
-//        public Order[] newArray(int size) {
-//            return new Order[size];
-//        }
-//    };
-//
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
 }
